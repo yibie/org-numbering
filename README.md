@@ -2,6 +2,8 @@
 
 A flexible and customizable numbering system for Org mode headings, supporting various international numbering schemes.
 
+![org-numbering](https://github.com/yibie/org-numbering/blob/main/assets/figure1.gif)
+
 ## Features
 
 - Multiple numbering schemes:
