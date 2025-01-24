@@ -476,9 +476,8 @@ HEADINGS is a property list containing heading information"
                                (concat " [#" (char-to-string priority) "]")
                              "")
                            " "
-                           (string-trim formatted-number)  ; remove extra spaces
-                           " "  ; add space between number and title
-                           (org-numbering--clean-title title))))  ; use new clean function
+                           formatted-number  ; 使用格式化后的编号，包含或不包含空格
+                           (org-numbering--clean-title title))))  ; 移除额外的空格添加
                     ;; insert title and align tags
                     (if tags
                         (progn

@@ -30,26 +30,28 @@ Each scheme is a plist with the following functions:
 - :validate-fn  - Validate number")
 
 (defcustom org-numbering-format-style
-  '((decimal . "%s.")      ; 1. 2. 3.
-    (alpha . "%s.")        ; a. b. c.
-    (roman . "%s.")        ; I. II. III.
-    (chinese . "%s、")      ; 一、二、三
-    (upper-alpha . "%s.")    ; A. B. C.
-    (circled . "%s")         ; ① ② ③
-    (parenthesized . "%s.")   ; ⒜. ⒝. ⒞.
-    (bullet . "%s")          ; • • •
-    (dash . "%s")            ; - - -
-    (square . "%s")          ; □ □ □
-    (greek . "%s)")          ; α) β) γ)
-    (paren-num . "%s")        ; (1) (2) (3)
-    (paren-roman . "%s")      ; (i) (ii) (iii)
-    (katakana . "%s、")       ; ア、イ、ウ
-    (iroha . "%s、")          ; イ、ロ、ハ
-    (chapter . "%s")          ; 第一章 第二章
-    (paren-chinese . "%s")    ; （一）（二）
-    (extended-circled . "%s")  ; ⑴ ⑵ ⑶
-    (white-circled . "%s、"))   ; ○１、○２、○３
-  "Format templates for each numbering scheme."
+  '((decimal . "%s. ")           ; 1. Title (with space)
+    (alpha . "%s) ")             ; a) Title (with space)
+    (roman . "%s. ")             ; I. Title (with space)
+    (chinese . "%s、")           ; 一、Title (no space)
+    (upper-alpha . "%s. ")       ; A. Title (with space)
+    (circled . "%s ")            ; ① Title (with space)
+    (parenthesized . "%s ")      ; ⒜ Title (with space)
+    (bullet . "%s ")             ; • Title (with space)
+    (dash . "%s ")               ; - Title (with space)
+    (square . "%s ")             ; □ Title (with space)
+    (greek . "%s) ")             ; α) Title (with space)
+    (paren-num . "%s ")          ; (1) Title (with space)
+    (paren-roman . "%s ")        ; (i) Title (with space)
+    (katakana . "%s、")          ; ア、Title (no space)
+    (iroha . "%s、")             ; イ、Title (no space)
+    (chapter . "%s ")             ; 第一章Title (no space)
+    (paren-chinese . "%s")       ; （一）Title (no space)
+    (extended-circled . "%s ")   ; ⑴ Title (with space)
+    (white-circled . "%s、"))    ; ○１、Title (no space)
+  "Format templates for each numbering scheme.
+The %s will be replaced with the formatted number.
+Note that CJK schemes don't add extra space after the number."
   :type '(alist :key-type symbol :value-type string)
   :group 'org-numbering-schemes)
 
