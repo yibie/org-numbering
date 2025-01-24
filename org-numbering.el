@@ -133,7 +133,9 @@
   "Defines the numbering scheme for each heading level.
 Each level can be set with the following properties:
   - scheme: The numbering scheme used (decimal, roman, alpha, etc.)
-  - combine: Whether to use combined numbering (t indicates combining with parent numbering, nil indicates using separate numbering)"
+  - combine: Whether to use combined numbering (t indicates combining with parent numbering, nil indicates using separate numbering)
+
+Users can define their own schemes and switch between them in their configuration."
   :type '(alist :key-type integer
                 :value-type (alist :key-type symbol :value-type sexp))
   :group 'org-numbering)

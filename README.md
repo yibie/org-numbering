@@ -160,6 +160,54 @@ Examples:
 | extended-circled | ⑴, ⑵, ⑶ | Extended circled |
 | white-circled | ○１、○２ | White circled |
 
+### Tricks
+
+#### Switch between different numbering schemes
+
+You can define different numbering schemes and switch between them in your configuration:
+
+```
+(defvar my/org-numbering-academic-scheme
+  '((1 . ((scheme . decimal)      ; 1.
+          (combine . nil)))
+    (2 . ((scheme . decimal)      ; 1.1
+          (combine . t)))
+    (3 . ((scheme . decimal)      ; 1.1.1
+          (combine . t)))
+    (4 . ((scheme . alpha)        ; a)
+          (combine . nil)))
+    (5 . ((scheme . paren-num)    ; (1)
+          (combine . nil))))
+  "Academic paper style numbering scheme.")
+
+(defvar my/org-numbering-chinese-scheme
+  '((1 . ((scheme . chapter)      ; 第一章
+          (combine . nil)))
+    (2 . ((scheme . decimal)      ; 1.1
+          (combine . t)))
+    (3 . ((scheme . paren-chinese) ; （一）
+          (combine . nil)))
+    (4 . ((scheme . extended-circled) ; ⑴
+          (combine . nil)))
+    (5 . ((scheme . white-circled)   ; ○１、
+          (combine . nil))))
+  "Chinese academic style numbering scheme.")
+
+(defun my/org-numbering-toggle-scheme ()
+  "Toggle between academic and Chinese numbering schemes."
+  (interactive)
+  (if (equal org-numbering-level-scheme my/org-numbering-academic-scheme)
+      (progn 
+        (setq org-numbering-level-scheme my/org-numbering-chinese-scheme)
+        (message "Switched to Chinese numbering scheme"))
+    (setq org-numbering-level-scheme my/org-numbering-academic-scheme)
+    (message "Switched to Academic numbering scheme")))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c n t") #'my/org-numbering-toggle-scheme))
+```
+
+
 ### Add Your Own Numbering Scheme
 
 You can create your own numbering scheme by registering it with `org-numbering-register-scheme`. Each scheme needs four functions:
