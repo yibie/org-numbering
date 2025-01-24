@@ -309,7 +309,7 @@ COUNT-STRATEGY can be 'global or 'local."
   "Update heading number at point"
   (message "Trying to update heading at point %d" (point))
   (save-excursion
-    (org-back-to-heading t)  ; 确保在标题开始处
+    (org-back-to-heading t)  
     (when (looking-at org-complex-heading-regexp)
       (let* ((stars (match-string-no-properties 1))
              (todo (match-string-no-properties 2))
