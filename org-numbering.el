@@ -305,38 +305,6 @@ COUNT-STRATEGY can be 'global or 'local."
             (funcall increment-fn nil)
           (funcall increment-fn (plist-get (car (last siblings)) :number)))))))
 
-(defun org-numbering--update-heading-number (level)
-  "Update heading number at point"
-  (message "Trying to update heading at point %d" (point))
-  (save-excursion
-    (org-back-to-heading t)  
-    (when (looking-at org-complex-heading-regexp)
-      (let* ((stars (match-string-no-properties 1))
-             (todo (match-string-no-properties 2))
-             (priority (match-string-no-properties 3))
-             (title (match-string-no-properties 4))
-             (tags (match-string-no-properties 5)))
-        (message "Matched heading: stars='%s' todo='%s' priority='%s' title='%s' tags='%s'"
-                 stars todo priority title tags)
-        (when title
-          (let* ((title-begin (match-beginning 4))
-                 (title-end (match-end 4))
-                 (scheme (org-numbering--get-level-scheme level))
-                 (number (gethash (point) org-numbering-numbers)))
-            (message "Got number %s for scheme %s" number scheme)
-            ;; delete old title
-            (goto-char title-begin)
-            (delete-region title-begin title-end)
-            ;; remove old number (if exists)
-            (if (string-match "^\\(?:[IVXLCDM]+[.]\\|[a-z][.]\\|[0-9]+[.]\\|[一二三四五六七八九十百千万亿]+、\\)?\\s-*\\(.*\\)" title)
-                (setq title (match-string 1 title))
-              (setq title (string-trim title)))
-            ;; insert new title (with new number)
-            (when (and number scheme)
-              (let ((formatted-number (org-numbering--format scheme number)))
-                (when formatted-number
-                  (insert (concat formatted-number " " title)))))))))))
-
 ;;;; Heading Collection and Numbering
 
 (defun org-numbering--collect-headings (start end min-level)
@@ -523,22 +491,25 @@ HEADINGS is a property list containing heading information"
           (concat
            "^\\(?:"
            ;; combined number format (like 1.1.a)
-           "\\(?:[0-9.]+[a-z]\\|"
+           "\\(?:[0-9]+\\.\\)+[a-z]"
+           "\\|"
            ;; multi-level number (like 1.1)
-           "[0-9.]+\\|"
-           ;; single letter number (like a.) and repeated letter numbers (like a. a.)
-           "\\(?:[a-z][.]\\s-*\\)+\\|"
-           ;; single number (like 1.) and repeated number numbers (like 1. 1.)
-           "\\(?:[0-9]+[.]\\s-*\\)+\\|"
-           ;; roman numerals
-           "[IVXLCDM]+\\|"
-           ;; chinese numerals
-           "[一二三四五六七八九十百千万亿]+[、.]"
+           "\\(?:[0-9]+\\.\\)+"
+           "\\|"
+           ;; single letter number (like a.)
+           "[a-z]\\."
+           "\\|"
+           ;; single number (like 1.)
+           "[0-9]+\\."
+           "\\|"
+           ;; roman numerals with dot
+           "[IVXLCDM]+\\."
+           "\\|"
+           ;; chinese numerals with dot or、
+           "[一二三四五六七八九十百千万亿]+[、\\.]"
            "\\)"
-           "[[:space:]]*"
-           "\\)"
-           "\\(.*\\)")
-          "\\1"
+           "\\s-*")
+          ""
           title)))
     ;; keep date format
     (if (string-match "^\\[\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\s-+[A-Za-z]\\{3\\}\\)\\]\\s-*\\(.*\\)" clean-title)
