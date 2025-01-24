@@ -337,7 +337,8 @@ MIN-LEVEL specifies the minimum heading level"
                    (title (org-get-heading t t t t))
                    (components (org-heading-components)))
               (message "DEBUG: Including heading - point=%d level=%d parent=%d title='%s'"
-                      current-point level parent-point title)
+                       current-point level parent-point title)
+              (unless (string-match-p "^COMMENT "(nth 4 (org-heading-components)))
               ;; update parent title record
               (puthash level current-point current-parents)
               ;; clear records of deeper levels
@@ -364,7 +365,7 @@ MIN-LEVEL specifies the minimum heading level"
                                        :parents parent-chain
                                        :todo (nth 2 components)
                                        :priority (nth 3 components)
-                                       :tags (nth 5 components)))))))))))
+                                       :tags (nth 5 components))))))))))))
     (message "DEBUG: Final collected headings: %S" headings)
     headings))
 
